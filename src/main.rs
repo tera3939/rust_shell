@@ -7,7 +7,9 @@ use std::process;
 
 extern crate libc;
 extern crate regex;
+extern crate ncurses;
 use regex::Regex;
+use ncurses::*;
 
 type Args<'a> = Vec<&'a str>;
 
@@ -17,13 +19,18 @@ extern {
 }
 
 fn sl(argv: &Args, argc: i32) {
+    // patch from the planet azyobuzi
+    // https://gist.github.com/azyobuzin/9ec07d7ab465081537c11517c1eb227e
+    // this is so kansya kangeki ame arare!!!
+    let cstrs = argv.iter()
+                    .map(|x| CString::new(*x))
+                    .filter_map(|x| x.ok())
+                    .collect::<Vec<_>>();
+    let argv = cstrs.iter()
+                    .map(|x| x.as_ptr())
+                    .collect::<Vec<_>>();
     unsafe {
-        let argv = argv.iter()
-                       .map(|x| CString::new(*x))
-                       .filter(|x| x.is_ok())
-                       .map(|x| x.unwrap().as_ptr())
-                       .collect::<Vec<*const c_char>>();
-        _sl(argv[..].as_ptr(), argc);
+        _sl(argv, argc);
     }
 }
 
