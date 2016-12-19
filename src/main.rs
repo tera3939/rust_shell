@@ -7,9 +7,7 @@ use std::process;
 
 extern crate libc;
 extern crate regex;
-extern crate ncurses;
 use regex::Regex;
-use ncurses::*;
 
 type Args<'a> = Vec<&'a str>;
 
@@ -30,7 +28,7 @@ fn sl(argv: &Args, argc: i32) {
                     .map(|x| x.as_ptr())
                     .collect::<Vec<_>>();
     unsafe {
-        _sl(argv, argc);
+        _sl(argv[..].as_ptr(), argc);
     }
 }
 
