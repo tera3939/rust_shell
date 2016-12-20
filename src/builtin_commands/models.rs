@@ -34,15 +34,15 @@ pub struct CommandMap {
 }
 
 impl CommandMap {
-    fn new() -> CommandMap {
+    pub fn new() -> CommandMap {
         CommandMap { map: Vec::new() }
     }
 
-    fn add(&mut self, name: &'static str, cmd: Box<Command>) {
+    pub fn add(&mut self, name: &'static str, cmd: Box<Command>) {
         self.map.push((name, cmd));
     }
 
-    fn run(&self, reader: &Args) {
+    pub fn run(&self, reader: &Args) {
         let cmd = reader[0];
         if let Some(&(_, ref cmd)) = self.map.iter().filter(|&&(name, _)| name == cmd).nth(0) {
             cmd.run(reader);

@@ -41,6 +41,8 @@
 #include <unistd.h>
 #include "sl.h"
 
+
+void clear_flag();
 void add_smoke(int y, int x);
 void add_man(int y, int x);
 int add_C51(int x);
@@ -61,6 +63,14 @@ int my_mvaddstr(int y, int x, char *str)
     for ( ; *str != '\0'; ++str, ++x)
         if (mvaddch(y, x, *str) == ERR)  return ERR;
     return OK;
+}
+
+void clear_flag()
+{
+    ACCIDENT = 0;
+    FLY      = 0;
+    LOGO     = 0;
+    C51      = 0;
 }
 
 void option(char *str)
@@ -111,6 +121,7 @@ void _sl(char *argv[], int argc)
     }
     mvcur(0, COLS - 1, LINES - 1, 0);
     endwin();
+    clear_flag();
 }
 
 
